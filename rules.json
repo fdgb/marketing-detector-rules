@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "updatedAt": "2026-05-24T20:00:00+08:00",
+  "changelog": "v2: 增加职场故事洗稿检测、微信公众号流量号规则",
+
+  "bilibili": {
+    "adParams": [
+      "from_bcg",
+      "creative_id",
+      "trackid",
+      "track_id",
+      "image_material_id",
+      "title_material_id"
+    ],
+    "organicParams": [
+      { "pattern": "spm_id_from=333\\..*\\.homepage\\..*", "label": "首页算法推荐" },
+      { "pattern": "spm_id_from=333\\..*\\.tianma\\..*", "label": "天马算法推荐" }
+    ],
+    "organicSourceParam": "vd_source"
+  },
+
+  "accountNamePatterns": {
+    "highRisk": [
+      ".*变现记$",
+      ".*的AI日记$",
+      ".*变现日记$",
+      ".*副业日记$",
+      ".*搞钱日记$",
+      ".*赚钱记$",
+      ".*搞钱记$",
+      "日入\\d+",
+      "月入\\d+万?",
+      "被动收入"
+    ],
+    "mediumRisk": [
+      "^.{2,4}$",
+      "^(.{1,3})\\1$",
+      "精选$",
+      "说事$",
+      "观察$",
+      "前沿$",
+      "必看$",
+      "头条$"
+    ],
+    "trusted": [
+      "实验室$",
+      "研究所$",
+      "工作室$",
+      "团队$",
+      "科普"
+    ]
+  },
+
+  "titlePatterns": {
+    "highRisk": [
+      "越穷越要看",
+      "别被割韭菜",
+      "月薪\\d+w?跳槽",
+      "工资\\d+w?.*跳槽",
+      "日入\\d+",
+      "月入\\d+万",
+      "被动收入.*\\d+",
+      "副业.*月入",
+      "AI.*赚钱",
+      "AI.*变现",
+      "普通人也能",
+      "小白也能",
+      "免费教?你",
+      "价值\\d+万"
+    ],
+    "mediumRisk": [
+      "震惊",
+      "居然",
+      "竟然",
+      "反转",
+      "太.*了$",
+      "千万别",
+      "一定?要",
+      "后悔没",
+      "早知道",
+      "偷偷",
+      "秘密",
+      "内部消息",
+      "潜规则"
+    ]
+  },
+
+  "contentPatterns": {
+    "workplaceStory": {
+      "roundSalary": "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w",
+      "vagueSource": "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜",
+      "plotHook": "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却"
+    },
+    "aiSideHustle": {
+      "incomeClaim": "月入|日赚|收益|到账|提现",
+      "coursePitch": "点击链接|扫码领取|免费领取|限时免费|加群"
+    }
+  },
+
+  "dataAnomaly": {
+    "favoriteGtLike": true,
+    "emptyBio": true,
+    "lowLikeRate": 0.01
+  },
+
+  "weights": {
+    "adParam": 30,
+    "highRiskName": 25,
+    "mediumRiskName": 15,
+    "highRiskTitle": 20,
+    "mediumRiskTitle": 10,
+    "contentPattern": 15,
+    "favoriteGtLike": 15,
+    "emptyBio": 10,
+    "lowLikeRate": 10,
+    "vagueSource": 12,
+    "roundSalary": 10,
+    "plotHook": 8
+  },
+
+  "thresholds": {
+    "high": 30,
+    "medium": 15
+  }
+}
