@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+<title>营销号鉴别器 - 一键识别</title>
+<style>
+/* ===== 重置 & 基础 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #f0f2f5;
+  color: #1a1a1a;
+  line-height: 1.7;
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ===== 容器 ===== */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ===== 头部 ===== */
+.header {
+  text-align: center;
+  padding: 24px 16px 16px;
+}
+.header-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.header p {
+  font-size: 0.95rem;
+  color: #888;
+}
+
+/* ===== 输入区 ===== */
+.input-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.input-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.input-label .icon { font-size: 1.3rem; }
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.field-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+  display: block;
+}
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field-group input:focus,
+.field-group textarea:focus {
+  outline: none;
+  border-color: #4a90d9;
+}
+.field-group textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+  color: #bbb;
+}
+.optional-tag {
+  font-size: 0.75rem;
+  color: #aaa;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* ===== 按钮 ===== */
+.btn-detect {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #4a90d9, #357abd);
+  cursor: pointer;
+  margin-top: 16px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(74,144,217,0.3);
+}
+.btn-detect:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(74,144,217,0.3);
+}
+.btn-detect.detecting {
+  background: linear-gradient(135deg, #999, #777);
+  pointer-events: none;
+}
+.btn-clear {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #888;
+  background: #fff;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* ===== 结果区 ===== */
+.result-section {
+  display: none;
+  margin-top: 16px;
+}
+.result-section.show { display: block; }
+
+/* 风险等级卡片 */
+.risk-card {
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-bottom: 16px;
+  animation: cardIn 0.4s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.risk-card.high {
+  background: linear-gradient(135deg, #ff4d4f, #cf1322);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255,77,79,0.3);
+}
+.risk-card.medium {
+  background: linear-gradient(135deg, #faad14, #d48806);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(250,173,20,0.3);
+}
+.risk-card.low {
+  background: linear-gradient(135deg, #52c41a, #389e0d);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(82,196,26,0.3);
+}
+.risk-level-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 8px;
+}
+.risk-level-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.risk-score {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* 信号列表 */
+.signal-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.signal-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.signal-list {
+  list-style: none;
+}
+.signal-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.signal-item:last-child { border-bottom: none; }
+.signal-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  padding: 0 6px;
+}
+.signal-badge.red { background: #ff4d4f; }
+.signal-badge.orange { background: #faad14; }
+.signal-badge.green { background: #52c41a; }
+.signal-badge.gray { background: #bbb; }
+.signal-text { flex: 1; }
+.signal-weight {
+  font-size: 0.8rem;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+/* 科普指正 */
+.correction-card {
+  background: linear-gradient(135deg, #e6f7ff, #bae7ff);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 12px;
+  border-left: 4px solid #1890ff;
+}
+.correction-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0050b3;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.correction-item {
+  padding: 10px 0;
+  border-bottom: 1px dashed #91d5ff;
+}
+.correction-item:last-child { border-bottom: none; }
+.correction-claim {
+  font-size: 0.85rem;
+  color: #cf1322;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.correction-fact {
+  font-size: 0.95rem;
+  color: #003a8c;
+  line-height: 1.7;
+}
+.correction-source {
+  font-size: 0.8rem;
+  color: #69c0ff;
+  margin-top: 4px;
+}
+
+/* 防骗建议 */
+.prevention-card {
+  background: linear-gradient(135deg, #f6ffed, #d9f7be);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 12px;
+  border-left: 4px solid #52c41a;
+}
+.prevention-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #237804;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.prevention-list {
+  list-style: none;
+  counter-reset: tips;
+}
+.prevention-item {
+  padding: 8px 0;
+  padding-left: 32px;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #135200;
+}
+.prevention-item::before {
+  counter-increment: tips;
+  content: counter(tips);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #52c41a;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 口诀卡片 */
+.motto-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 16px;
+  text-align: center;
+  border: 2px dashed #faad14;
+}
+.motto-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #d48806;
+  margin-bottom: 10px;
+}
+.motto-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #cf1322;
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
+/* 底部 */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #bbb;
+  font-size: 0.8rem;
+}
+.footer a { color: #4a90d9; text-decoration: none; }
+
+/* ===== 加载动画 ===== */
+.scanning-bar {
+  display: none;
+  height: 4px;
+  background: #e8e8e8;
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+.scanning-bar.active { display: block; }
+.scanning-bar-inner {
+  height: 100%;
+  width: 30%;
+  background: linear-gradient(90deg, #4a90d9, #357abd);
+  border-radius: 2px;
+  animation: scanSlide 1.2s ease-in-out infinite;
+}
+@keyframes scanSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* ===== 高风险抖动 ===== */
+.shake {
+  animation: shake 0.5s ease;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* ===== 适配小屏 ===== */
+@media (max-width: 400px) {
+  html { font-size: 16px; }
+  .container { padding: 12px; }
+  .risk-card { padding: 20px 16px; }
+}
+/* ===== 适配大字模式 ===== */
+@media (min-width: 768px) {
+  html { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 头部 -->
+  <div class="header">
+    <span class="header-icon">🛡️</span>
+    <h1>营销号鉴别器</h1>
+    <p>粘贴文章内容，一键识别营销号</p>
+  </div>
+
+  <!-- 输入区 -->
+  <div class="input-section">
+    <div class="input-fields">
+      <div class="field-group">
+        <label>📄 文章标题</label>
+        <input type="text" id="inputTitle" placeholder="粘贴文章标题（可选）">
+      </div>
+      <div class="field-group">
+        <label>✍️ 文章内容</label>
+        <textarea id="inputContent" placeholder="粘贴文章正文内容&#10;&#10;从微信/头条/抖音等平台复制文章内容粘贴到这里即可检测"></textarea>
+      </div>
+      <div class="field-group">
+        <label>👤 作者/账号名 <span class="optional-tag">（选填）</span></label>
+        <input type="text" id="inputAuthor" placeholder="填写账号名（可选）">
+      </div>
+    </div>
+
+    <button class="btn-detect" id="btnDetect" onclick="runDetect()">
+      🔍 开始鉴别
+    </button>
+    <div class="scanning-bar" id="scanBar">
+      <div class="scanning-bar-inner"></div>
+    </div>
+    <button class="btn-clear" onclick="clearAll()">
+      清空内容
+    </button>
+  </div>
+
+  <!-- 结果区 -->
+  <div class="result-section" id="resultSection">
+    <!-- 动态生成 -->
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    营销号鉴别器 v5 · 规则库 v3 · 数据仅供参考
+  </div>
+</div>
+
+<script>
+/**
+ * 营销号鉴别器 - 网页版检测引擎
+ * 核心逻辑复用自 Chrome 扩展版 detector.js + rules.json
+ */
+
+// ===== 规则数据（内嵌，无需网络） =====
+const RULES = {
+  version: 3,
+  accountNamePatterns: {
+    highRisk: [
+      ".*变现记$", ".*的AI日记$", ".*变现日记$", ".*副业日记$", ".*搞钱日记$",
+      ".*赚钱记$", ".*搞钱记$", ".*源头日记$", "日入\\d+", "月入\\d+万?",
+      "被动收入", "偏方.*大全", "秘方.*大全", ".*奇效方.*", ".*生活馆$",
+      ".*小妙招$", "^gh[0-9a-f]+$", ".*片场$", ".*剧场$", "博士聊.*",
+      ".*觉醒技能$", ".*洞察$", ".*复盘$"
+    ],
+    mediumRisk: [
+      "^.{2,4}$", "^(.{1,3})\\1$", "精选$", "说事$", "观察$", "前沿$",
+      "必看$", "头条$", "妙招$", ".*趣闻$", "百科$", "知识$",
+      "NHS.*", "法华.*", "传统文化.*"
+    ],
+    trusted: ["实验室$", "研究所$", "工作室$", "团队$", "科普", "大学$", "医院$", "协会$"]
+  },
+  titlePatterns: {
+    highRisk: [
+      "越穷越要看", "别被割韭菜", "月薪\\d+w?跳槽", "工资\\d+w?.*跳槽",
+      "日入\\d+", "月入\\d+万", "月入\\d{2,}万", "被动收入.*\\d+",
+      "副业.*月入", "AI.*赚钱", "AI.*变现", "普通人也能", "小白也能",
+      "免费教?你", "价值\\d+万", "零门槛.*月入",
+      "不能吃", "不能.*一起吃", "不能过夜", "食物相克",
+      "偏方", "秘方", "不传秘方", "治病秘方",
+      "上过央视", "央视报道", "老中医", "华佗", "李时珍",
+      "老祖宗.*秘方", "根治", "包治", "癌细胞.*消失",
+      "转发.*有礼", "转发.*好礼", "转发全家", "防癌食谱",
+      "你的.*正在.*衰竭", "再不.*就来不及", "\\d+人吃了\\d+人", "绝了", "不敢想象", "摆摊.*月入"
+    ],
+    mediumRisk: [
+      "震惊", "居然", "竟然", "反转", "太.*了$",
+      "千万别", "一定?要", "后悔没", "早知道", "偷偷", "秘密",
+      "内部消息", "潜规则", "很多人不懂", "别再吃错",
+      "睡前不能", "早餐不能", "避开内卷", "很简单", "这么简单",
+      "复盘.*转折", "只做对了", "\\d+岁.*副业", "女性.*月入"
+    ]
+  },
+  contentPatterns: {
+    workplaceStory: {
+      roundSalary: "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w",
+      vagueSource: "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜",
+      plotHook: "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却"
+    },
+    aiSideHustle: {
+      incomeClaim: "月入|日赚|收益|到账|提现",
+      coursePitch: "点击链接|扫码领取|免费领取|限时免费|加群"
+    },
+    elderlyHealth: {
+      miracleCure: "包治百病|根治|治愈率|神奇效果|奇效|见效快",
+      authorityBorrow: "央视报道|上过央视|老中医|华佗|李时珍|张仲景|孙思邈|NHS|诺贝尔",
+      foodTaboo: "不能吃|不能一起吃|食物相克|不能过夜|食物禁忌|睡前不能吃",
+      healthAnxiety: "正在衰竭|再不养|来不及|90%.*缺|你的.*正在求救",
+      folkRemedy: "偏方|秘方|不传秘方|民间偏方|老祖宗|口口相传|很珍贵",
+      forwardReward: "转发.*有礼|转发.*好礼|转发朋友圈|转发全家"
+    },
+    sideHustleVariant: {
+      femalPersona: "女人.*月入|夫人.*觉醒|宝妈.*副业|女性.*赚钱",
+      reviewStyle: "复盘|关键转折|我做对了|经验分享|方法论",
+      diaryPersona: "日记|84年|42岁|大学老师.*副业|职业转型"
+    }
+  },
+  elderlyRules: {
+    keywords: {
+      healthPseudoscience: ["偏方", "秘方", "根治", "包治", "奇效", "见效快", "不传秘方", "老祖宗"],
+      authorityImpersonation: ["老中医", "华佗", "李时珍", "央视报道", "上过央视", "NHS", "诺贝尔"],
+      foodTaboo: ["不能吃", "不能一起吃", "食物相克", "不能过夜", "睡前不能"],
+      healthAnxiety: ["正在衰竭", "再不养", "来不及", "你的正在求救"],
+      supplementSales: ["限时优惠", "仅剩", "最后机会", "赶紧下单"],
+      forwardInducement: ["转发有礼", "转发全家受益", "转发朋友圈"]
+    },
+    correctionMessages: {
+      healthPseudoscience: "不存在能治百病的偏方。任何声称「包治百病」「根治」的都是虚假宣传。健康问题应咨询正规医生，不要轻信民间偏方。",
+      authorityImpersonation: "正规医疗机构不会通过短视频/公众号推销产品或秘方。请检查所谓的「协会」「专家」是否真实存在。「华佗秘方」等历史人物名义的偏方均不可考。",
+      foodTaboo: "食物相克已被中国营养学会多次辟谣，不存在所谓的食物相克。食物没有绝对「不能吃」，只有量和个人体质差异。",
+      healthAnxiety: "这是典型的恐吓营销话术，制造焦虑后推销产品。正规营养补充应遵医嘱，不应被营销内容恐吓。",
+      forwardInducement: "「转发有礼」类内容是商业推广信号，利用社交链低成本扩散。正规健康科普不会要求转发扩散。"
+    },
+    preventionTips: {
+      general: "1. 看到「根治」「包治」「秘方」直接拉黑 2. 健康问题咨询正规医生 3. 帮家里长辈设置营销号屏蔽 4. 安装营销号鉴别浏览器插件",
+      foodTaboo: "1. 食物相克已被科学证伪 2. 「不能吃」绝对化表述=营销号特征 3. 搜索相关辟谣信息验证",
+      authorityCheck: "1. 核实专家/机构是否真实存在 2. 正规医生不会网上卖药 3. 「央视报道过」≠央视背书"
+    }
+  },
+  weights: {
+    adParam: 30, highRiskName: 25, mediumRiskName: 15,
+    highRiskTitle: 20, mediumRiskTitle: 10, contentPattern: 15,
+    favoriteGtLike: 15, emptyBio: 10, lowLikeRate: 10,
+    vagueSource: 12, roundSalary: 10, plotHook: 8,
+    elderlyHealth: 18, sideHustleVariant: 12,
+    extremeFavoriteRatio: 20, extremeLowLikeRate: 15,
+    miracleCure: 18, authorityBorrow: 16, foodTaboo: 16,
+    healthAnxiety: 15, folkRemedy: 14, forwardReward: 12,
+    healthPseudoscience: 18, authorityImpersonation: 16,
+    forwardInducement: 12, supplementSales: 10
+  },
+  thresholds: { high: 30, medium: 15 }
+};
+
+// ===== 检测引擎 =====
+class WebDetector {
+  constructor() {
+    this.signals = [];
+    this.score = 0;
+    this.hitElderlyCategories = new Set();
+  }
+
+  _toRegex(pattern) {
+    if (pattern instanceof RegExp) return pattern;
+    if (typeof pattern === 'string') {
+      try { return new RegExp(pattern); } catch { return null; }
+    }
+    return null;
+  }
+
+  _addSignal(type, desc, customScore) {
+    const weight = customScore !== undefined ? customScore : (RULES.weights[type] || 0);
+    this.score += weight;
+    this.signals.push({ type, description: desc, weight: Math.abs(weight), isPositive: weight < 0 });
+  }
+
+  detect(title, content, author) {
+    this.signals = [];
+    this.score = 0;
+    this.hitElderlyCategories = new Set();
+
+    // 1. 账号名检测
+    if (author && author.trim()) this._checkAccountName(author.trim());
+
+    // 2. 标题检测
+    if (title && title.trim()) this._checkTitle(title.trim());
+
+    // 3. 内容模式检测
+    const text = `${title || ''} ${content || ''}`;
+    if (text.trim()) this._checkContent(text);
+
+    // 4. 老年人专项检测
+    this._checkElderlyTargeting(text);
+
+    // 5. 计算结果
+    const level = this._calcLevel();
+    const corrections = this._generateCorrections();
+    const prevention = this._generatePrevention();
+
+    return { level, score: this.score, signals: this.signals, corrections, prevention };
+  }
+
+  _checkAccountName(name) {
+    const nameRules = RULES.accountNamePatterns;
+    for (const p of (nameRules.trusted || [])) {
+      const r = this._toRegex(p);
+      if (r && r.test(name)) { this._addSignal('trusted', `账号名含可信标识（${name}）`, -5); return; }
+    }
+    for (const p of (nameRules.highRisk || [])) {
+      const r = this._toRegex(p);
+      if (r && r.test(name)) { this._addSignal('highRiskName', `账号名匹配高危模式（${name}）`); return; }
+    }
+    for (const p of (nameRules.mediumRisk || [])) {
+      const r = this._toRegex(p);
+      if (r && r.test(name)) { this._addSignal('mediumRiskName', `账号名匹配流量号模式（${name}）`); return; }
+    }
+  }
+
+  _checkTitle(title) {
+    for (const p of (RULES.titlePatterns.highRisk || [])) {
+      const r = this._toRegex(p);
+      if (r && r.test(title)) { this._addSignal('highRiskTitle', '标题含高危关键词（伪科学/副业/焦虑）'); break; }
+    }
+    for (const p of (RULES.titlePatterns.mediumRisk || [])) {
+      const r = this._toRegex(p);
+      if (r && r.test(title)) { this._addSignal('mediumRiskTitle', '标题含情绪诱导词'); break; }
+    }
+  }
+
+  _checkContent(text) {
+    const cp = RULES.contentPatterns;
+    // 职场故事
+    const wp = cp.workplaceStory || {};
+    const rs = this._toRegex(wp.roundSalary);
+    const vs = this._toRegex(wp.vagueSource);
+    const ph = this._toRegex(wp.plotHook);
+    if (rs && rs.test(text)) this._addSignal('roundSalary', '内容含整数薪资（编造痕迹）');
+    if (vs && vs.test(text)) this._addSignal('vagueSource', '消息来源模糊（"朋友说""前同事"）');
+    if (ph && ph.test(text)) this._addSignal('plotHook', '含情节转折钩子');
+    // AI副业
+    const ai = cp.aiSideHustle || {};
+    const ic = this._toRegex(ai.incomeClaim);
+    const cpi = this._toRegex(ai.coursePitch);
+    if (ic && cpi && ic.test(text) && cpi.test(text)) this._addSignal('contentPattern', '含副业收益+课程推销话术');
+    // 养生伪科学
+    const eh = cp.elderlyHealth || {};
+    for (const [key, pattern] of Object.entries(eh)) {
+      const r = this._toRegex(pattern);
+      if (r && r.test(text)) {
+        const labels = {
+          miracleCure: '含伪科学治愈声明（根治/包治/奇效等）',
+          authorityBorrow: '权威借用（央视/华佗/祖传/NHS等）',
+          foodTaboo: '含食物禁忌伪科学（不能吃/相克/致癌等）',
+          healthAnxiety: '健康恐吓话术（正在衰竭/来不及/求救等）',
+          folkRemedy: '含偏方秘方推荐（老祖宗/不传秘方等）',
+          forwardReward: '转发诱导扩散（转发有礼/转发全家等）'
+        };
+        this._addSignal(key, labels[key] || key);
+      }
+    }
+    // 副业变体
+    const sv = cp.sideHustleVariant || {};
+    for (const [key, pattern] of Object.entries(sv)) {
+      const r = this._toRegex(pattern);
+      if (r && r.test(text)) this._addSignal('sideHustleVariant', '副业卖课变体模式（人设化/复盘/日记体）');
+    }
+  }
+
+  _checkElderlyTargeting(text) {
+    const ek = RULES.elderlyRules.keywords;
+    for (const [category, keywords] of Object.entries(ek)) {
+      for (const kw of keywords) {
+        if (text.includes(kw)) {
+          this.hitElderlyCategories.add(category);
+          break;
+        }
+      }
+    }
+  }
+
+  _generateCorrections() {
+    const corrections = [];
+    const cm = RULES.elderlyRules.correctionMessages;
+    for (const cat of this.hitElderlyCategories) {
+      if (cm[cat]) {
+        corrections.push({ category, message: cm[cat] });
+      }
+    }
+    return corrections;
+  }
+
+  _generatePrevention() {
+    const tips = [];
+    const pt = RULES.elderlyRules.preventionTips;
+    if (this.hitElderlyCategories.has('foodTaboo')) tips.push(pt.foodTaboo);
+    if (this.hitElderlyCategories.has('authorityImpersonation')) tips.push(pt.authorityCheck);
+    if (this.hitElderlyCategories.size > 0) tips.push(pt.general);
+    return tips;
+  }
+
+  _calcLevel() {
+    const t = RULES.thresholds;
+    if (this.score >= (t.high || 30)) return 'high';
+    if (this.score >= (t.medium || 15)) return 'medium';
+    return 'low';
+  }
+}
+
+// ===== UI 逻辑 =====
+const detector = new WebDetector();
+
+function runDetect() {
+  const title = document.getElementById('inputTitle').value.trim();
+  const content = document.getElementById('inputContent').value.trim();
+  const author = document.getElementById('inputAuthor').value.trim();
+
+  if (!title && !content) {
+    alert('请至少填写文章标题或内容');
+    return;
+  }
+
+  // 显示加载
+  const btn = document.getElementById('btnDetect');
+  const bar = document.getElementById('scanBar');
+  btn.classList.add('detecting');
+  btn.textContent = '🔍 鉴别中...';
+  bar.classList.add('active');
+
+  setTimeout(() => {
+    const result = detector.detect(title, content, author);
+    renderResult(result);
+    btn.classList.remove('detecting');
+    btn.textContent = '🔍 开始鉴别';
+    bar.classList.remove('active');
+  }, 600);
+}
+
+function renderResult(r) {
+  const section = document.getElementById('resultSection');
+  const levelMap = {
+    high:  { icon: '🚨', text: '高风险 · 疑似营销号', cls: 'high' },
+    medium: { icon: '⚠️', text: '中风险 · 需要留意', cls: 'medium' },
+    low:   { icon: '✅', text: '低风险 · 相对安全', cls: 'low' }
+  };
+  const lv = levelMap[r.level];
+
+  let html = '';
+
+  // 风险卡片
+  html += `<div class="risk-card ${lv.cls} ${r.level === 'high' ? 'shake' : ''}">
+    <span class="risk-level-icon">${lv.icon}</span>
+    <div class="risk-level-text">${lv.text}</div>
+    <div class="risk-score">检测评分：${r.score} 分 · 命中 ${r.signals.filter(s => !s.isPositive).length} 项特征</div>
+  </div>`;
+
+  // 信号列表
+  const negSignals = r.signals.filter(s => !s.isPositive);
+  const posSignals = r.signals.filter(s => s.isPositive);
+  if (negSignals.length > 0) {
+    html += `<div class="signal-card">
+      <div class="signal-card-title">🔎 命中特征</div>
+      <ul class="signal-list">
+        ${negSignals.map(s => {
+          const badgeCls = s.weight >= 18 ? 'red' : s.weight >= 10 ? 'orange' : 'gray';
+          return `<li class="signal-item">
+            <span class="signal-badge ${badgeCls}">+${s.weight}</span>
+            <span class="signal-text">${s.description}</span>
+          </li>`;
+        }).join('')}
+      </ul>
+    </div>`;
+  }
+  if (posSignals.length > 0) {
+    html += `<div class="signal-card">
+      <div class="signal-card-title">🟢 可信信号</div>
+      <ul class="signal-list">
+        ${posSignals.map(s => `<li class="signal-item">
+          <span class="signal-badge green">✓</span>
+          <span class="signal-text">${s.description}</span>
+        </li>`).join('')}
+      </ul>
+    </div>`;
+  }
+
+  // 科普指正
+  if (r.corrections.length > 0) {
+    html += `<div class="correction-card">
+      <div class="correction-title">📚 科普指正</div>
+      ${r.corrections.map(c => `<div class="correction-item">
+        <div class="correction-fact">💡 ${c.message}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // 防骗建议
+  if (r.prevention.length > 0) {
+    const allTips = r.prevention.flatMap(t => t.split(/(?<=\d+\.\s)/).filter(s => s.trim()));
+    html += `<div class="prevention-card">
+      <div class="prevention-title">🛡️ 防骗建议</div>
+      <ul class="prevention-list">
+        ${allTips.map(t => `<li class="prevention-item">${t.replace(/^\d+\.\s*/, '')}</li>`).join('')}
+      </ul>
+    </div>`;
+  }
+
+  // 口诀
+  if (r.level === 'high' || r.level === 'medium') {
+    html += `<div class="motto-card">
+      <div class="motto-title">🧠 记住这六句话</div>
+      <div class="motto-text">
+        「根治包治」→ 假<br>
+        「秘方偏方」→ 假<br>
+        「不能吃」→ 假<br>
+        「月入过万」→ 假<br>
+        「转发有礼」→ 假<br>
+        「癌细胞消失」→ 假
+      </div>
+    </div>`;
+  }
+
+  section.innerHTML = html;
+  section.classList.add('show');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearAll() {
+  document.getElementById('inputTitle').value = '';
+  document.getElementById('inputContent').value = '';
+  document.getElementById('inputAuthor').value = '';
+  document.getElementById('resultSection').classList.remove('show');
+  document.getElementById('resultSection').innerHTML = '';
+}
+</script>
+
+</body>
+</html>
