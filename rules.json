@@ -1,7 +1,7 @@
 {
-  "version": 5,
-  "updatedAt": "2026-05-31T17:00:00+08:00",
-  "changelog": "v5: 新增国际平台规则(YouTube/Facebook/Twitter/TikTok/Reddit/Instagram)，英文标题/账号名/内容模式，deepfake医生检测，加密货币诈骗，astroturfing检测，老年医疗骗局",
+  "version": 6,
+  "updatedAt": "2026-05-31T17:30:00+08:00",
+  "changelog": "v6: 新增LinkedIn/Telegram/WhatsApp/Pinterest规则，求职诈骗检测，杀猪盘全链路检测，AI仿冒名人deepfake增强，多语言模式补充",
 
   "bilibili": {
     "adParams": [
@@ -121,6 +121,170 @@
     "deepfakeEndorsement": {
       "description": "AI生成虚假名人/医生代言",
       "signals": ["celebrity face + health product", "doctor in white coat + supplement", "inconsistent account history", "stock photo or AI-generated profile"]
+    }
+  },
+
+  "linkedin": {
+    "description": "LinkedIn求职/投资诈骗检测",
+    "jobScam": {
+      "description": "假招聘/假猎头检测",
+      "redFlags": [
+        "no formal interview required",
+        "upfront payment for registration/verification/license",
+        "vague job description with no clear responsibilities",
+        "salary seems too good for the role",
+        "recruiter profile created recently with limited connections",
+        "asked to move to Telegram/WhatsApp for interview",
+        "package forwarding / reshipping job",
+        "beat the ATS / ATS parsing report"
+      ],
+      "moneyMuleSignals": [
+        "receive and forward packages",
+        "transfer funds between accounts",
+        "process payments from home",
+        "commission-based package handling"
+      ],
+      "techScamSignals": [
+        "download this GitHub repo for assessment",
+        "run this code for the interview",
+        "install this tool for the project",
+        "evaluate our MVP product"
+      ]
+    },
+    "investmentScam": {
+      "description": "LinkedIn投资诈骗(白领杀猪盘)",
+      "signals": [
+        "exclusive crypto opportunity",
+        "guaranteed returns on investment",
+        "insider trading knowledge",
+        "AI trading algorithm",
+        "move conversation to private channel",
+        "show fake trading screenshots"
+      ]
+    },
+    "profileHijack": {
+      "description": "LinkedIn账户劫持/身份盗窃",
+      "signals": [
+        "LinkedIn optimization service",
+        "improve your profile visibility",
+        "resume rewriting for ATS",
+        "provide your login credentials",
+        "verify your identity via this link"
+      ]
+    }
+  },
+
+  "telegram": {
+    "description": "Telegram加密货币/投资群组诈骗检测",
+    "pigButcheringGroup": {
+      "description": "Telegram杀猪盘群组检测",
+      "entrySignals": [
+        "auto-added to investment group",
+        "VIP crypto/trading group",
+        "wrong number introduction",
+        "friendly stranger introduces opportunity",
+        "professor/analyst giving free signals"
+      ],
+      "operationSignals": [
+        "guaranteed daily/weekly returns",
+        "screenshot of massive profits",
+        "thank you testimonials from 'members'",
+        "download trading app via APK link",
+        "not available on Play Store/App Store",
+        "small withdrawal allowed initially",
+        "verification fee / tax to withdraw",
+        "security deposit required"
+      ],
+      "escalationSignals": [
+        "market about to surge",
+        "qualify for VIP with more deposit",
+        "opportunity won't last",
+        "take a loan to invest more",
+        "your account is under review",
+        "pay clearance/compliance fee"
+      ]
+    },
+    "signalGroupScam": {
+      "description": "虚假交易信号群组(10万+粉丝)",
+      "signals": [
+        "channel with 100K+ subscribers promotes platform",
+        "platform domain registered days before promotion",
+        "arbitrage opportunity exclusive to this platform",
+        "allow small withdrawals then lock large ones",
+        "demand BTC verification fee (~$5000)"
+      ]
+    }
+  },
+
+  "whatsapp": {
+    "description": "WhatsApp连锁转发/冒充诈骗检测",
+    "chainForward": {
+      "description": "WhatsApp连锁转发健康骗局",
+      "signals": [
+        "forward this to everyone you know",
+        "share before they delete this",
+        "medical breakthrough shared only here",
+        "doctor's secret remedy forwarded",
+        "government hiding this cure",
+        "sent from a friend who is a doctor"
+      ]
+    },
+    "impersonationScam": {
+      "description": "WhatsApp冒充身份诈骗(祖父母骗局)",
+      "signals": [
+        "hi mom/dad, new number",
+        "my phone is broken, this is my new number",
+        "need money urgently, can't talk now",
+        "don't tell anyone about this",
+        "wire transfer immediately",
+        "grandchild in emergency"
+      ]
+    },
+    "accountTakeover": {
+      "description": "WhatsApp账户接管诈骗",
+      "signals": [
+        "vote for my child competition link",
+        "enter this 6-digit code to help me",
+        "urgent help needed click this link",
+        "verify your WhatsApp account"
+      ]
+    },
+    "healthSupplementScam": {
+      "description": "WhatsApp保健品推销骗局",
+      "signals": [
+        "traditional Chinese medicine recommended by professor",
+        "celebrity endorsement for health product",
+        "upgrade to premium formula",
+        "limited stock of miracle remedy",
+        "cash on delivery for initial trust"
+      ]
+    }
+  },
+
+  "pinterest": {
+    "description": "Pinterest伪健康/虚假保健品检测",
+    "supplementScam": {
+      "description": "Pinterest虚假保健品/减肥骗局",
+      "signals": [
+        "miracle weight loss",
+        "lose 20 lbs in 2 weeks",
+        "natural fat burner",
+        "detox tea recipe",
+        "celebrity diet secret",
+        "before and after transformation",
+        "link to supplement purchase",
+        "AI-generated before/after photos"
+      ]
+    },
+    "diyHealthRisk": {
+      "description": "Pinterest DIY健康风险内容",
+      "signals": [
+        "homemade essential oil remedy",
+        "DIY natural antibiotic",
+        "natural alternative to medication",
+        "home remedy for serious condition",
+        "herbal cure recipe pin"
+      ]
     }
   },
 
@@ -271,7 +435,22 @@
       "claim\\s+your\\s+free",
       "double\\s+your\\s+(?:money|crypto|investment|bitcoin)",
       "\\$?\\d[\\d,]+\\s+(?:a\\s+day|per\\s+day|every\\s+day|in\\s+a\\s+week|passive)",
-      "make\\s+\\$?\\d[\\d,]+\\s+(?:from\\s+home|online|per\\s+month|side\\s+hustle)"
+      "make\\s+\\$?\\d[\\d,]+\\s+(?:from\\s+home|online|per\\s+month|side\\s+hustle)",
+      "beat\\s+the\\s+ATS",
+      "guaranteed\\s+(?:job|placement|income|returns|hiring)",
+      "no\\s+(?:interview|experience)\\s+(?:required|needed)",
+      "work\\s+from\\s+home.*\\$\\d",
+      "package\\s+(?:forwarding|handling|reshipping)",
+      "wrong\\s+number.*(?:invest|crypto|opportunity)",
+      "VIP\\s+(?:crypto|trading|investment|signal)\\s+group",
+      "professor.*(?:signal|tip|alert|strategy)",
+      "guaranteed.*(?:daily|weekly|monthly)\\s+(?:profit|return|income)",
+      "download.*(?:APK|app).*via\\s+(?:link|Telegram)",
+      "verification\\s+fee|tax\\s+(?:to\\s+)?withdraw|clearance\\s+fee",
+      "forward\\s+this\\s+(?:to|message|now)",
+      "share\\s+before.*delete",
+      "new\\s+number.*(?:mom|dad|family|urgent)",
+      "urgent.*(?:money|transfer|help|wire)"
     ],
     "mediumRisk": [
       "震惊",
@@ -339,23 +518,40 @@
       "diaryPersona": "日记|84年|42岁|大学老师.*副业|职业转型|my journey|day in the life|how I quit my job|career change story"
     },
     "deepfakeDoctor": {
-      "description": "AI生成假医生/虚假医疗代言检测",
+      "description": "AI生成假医生/虚假医疗代言/AI仿冒名人检测",
       "impersonationPhrases": "as a doctor with \\d+ years|I'?ve been a (?:surgeon|physician|specialist) for|in my \\d+ years of practice|trust me I'?m a doctor",
       "productPushPhrases": "this (?:supplement|extract|formula) is|better than (?:Ozempic|prescription|medication)|natural alternative to|check (?:the )?link in (?:my )?bio|available on (?:Amazon|our website)",
       "fakeCredentialPhrases": "board certified|top specialist|leading expert|world'?s best|award-winning physician",
-      "visualRedFlags": ["lip sync mismatch", "unnatural blinking", "edge artifacts around face", "robotic voice inflection", "consistent background across different 'doctors'"]
+      "celebrityImpersonation": "endorsed by (?:Dr\\.?|Professor) [A-Z][a-z]+|as (?:Dr\\.?|Professor) [A-Z][a-z]+ (?:said|recommends|discovered)|[A-Z][a-z]+ (?:breakthrough|discovery|secret)",
+      "aiGeneratedSignals": "mouth moves body doesn'?t|channel uploaded \\d+ videos in \\d+ (?:days|weeks)|disclaimer in bio|AI generated content notice|synthetic media label",
+      "visualRedFlags": ["lip sync mismatch", "unnatural blinking", "edge artifacts around face", "robotic voice inflection", "consistent background across different 'doctors'", "same face across multiple accounts", "virtual background instead of real office"]
     },
     "cryptoScam": {
-      "description": "加密货币诈骗检测(Twitter/YouTube)",
+      "description": "加密货币诈骗检测(Twitter/YouTube/Telegram)",
       "giveawayScam": "free (?:bitcoin|crypto|tokens|NFT)|double your (?:BTC|ETH|crypto|investment)|airdrop claim|send me .* I'?ll send back",
       "impersonationScam": "official support|admin here|team member|verify your wallet|connect your wallet|claim your airdrop",
-      "pigButchering": "I made \\$\\d[\\d,]+ (?:in|from) (?:crypto|trading|mining)|this (?:platform|exchange) is amazing|high returns guaranteed|low risk high reward"
+      "pigButchering": "I made \\$\\d[\\d,]+ (?:in|from) (?:crypto|trading|mining)|this (?:platform|exchange) is amazing|high returns guaranteed|low risk high reward",
+      "telegramGroupScam": "added to (?:VIP|investment|crypto|trading) group|professor.*(?:signal|tip|strategy)|guaranteed (?:daily|weekly) (?:profit|return|payout)|download (?:trading|exchange) app via (?:link|APK)",
+      "withdrawalTrap": "(?:verification|tax|clearance|security|compliance) fee (?:required|to withdraw|before withdrawal)|pay (?:fee|tax|deposit) to (?:release|unlock|access) (?:your )?(?:funds|profits|money|balance)",
+      "fakeExchange": "domain registered (?:days|recently) before promotion|not (?:available|listed) on (?:Play Store|App Store)|arbitrage (?:opportunity|bot|platform) exclusive"
     },
     "astroturfing": {
       "description": "虚假口碑/营销水军检测(Reddit/论坛)",
       "threePostPattern": "I made \\$\\d[\\d,]+ (?:using|with) this|I achieved .+\\. Copy this|should (?:this|\\w+) be banned",
       "sockPuppetSignals": "been using this for weeks|payout came quick|thought it was a scam too|really interesting to see|I was skeptical but",
       "coordinatedSignals": "same product mentioned in \\d+\\+ (?:subs|threads|posts) within \\d+ hours"
+    },
+    "jobScam": {
+      "description": "求职诈骗检测(LinkedIn/招聘平台)",
+      "fakeRecruiter": "open to work|background matches our needs|opportunity to discuss|expanding our team|reach out to discuss|your profile caught my attention",
+      "platformShift": "let'?s continue on (?:Telegram|WhatsApp|Signal)|move to private channel|join our (?:internal|private) (?:group|channel)|add me on (?:Telegram|WhatsApp)",
+      "upfrontPayment": "registration fee|verification fee|training cost|license fee|equipment deposit|background check fee",
+      "techExploit": "download this (?:repo|project|repository) for (?:assessment|evaluation)|run this (?:code|project|tool)|install this (?:extension|plugin|software)|evaluate our (?:MVP|product|prototype)"
+    },
+    "impersonationScam": {
+      "description": "冒充身份诈骗(WhatsApp祖父母骗局/LinkedIn账户劫持)",
+      "grandparentScam": "new number|my phone (?:broke|is broken|died)|this is my new number|can'?t talk right now|need (?:money|help) (?:urgently|immediately|right away)|don'?t tell (?:anyone|mom|dad)",
+      "accountHijack": "optimize your (?:LinkedIn|profile|resume)|improve your (?:visibility|reach|ranking)|provide your (?:login|credentials|password)|verify (?:identity|account) via (?:link|this)"
     }
   },
 
@@ -367,8 +563,10 @@
       "benefitScam": ["free benefits", "you qualify for", "spending allowance", "grocery card", "flex card", "health allowance card", "Medicare benefits", "prescription savings"],
       "supplementScam": ["all-natural", "FDA-registered facility", "GMP certified", "non-GMO", "made in USA", "ancient formula", "natural extract", "better than Ozempic"],
       "fakeDeadline": ["act now", "last chance", "expires today", "enrollment closes", "limited time offer", "midnight deadline", "don't wait"],
-      "deepfakeDoctor": ["AI-generated doctor", "TikDoc", "synthetic physician", "fake medical advice", "deepfake health endorsement"],
-      "cryptoScam": ["free bitcoin", "double your crypto", "airdrop claim", "connect wallet", "verify wallet", "giveaway"]
+      "deepfakeDoctor": ["AI-generated doctor", "TikDoc", "synthetic physician", "fake medical advice", "deepfake health endorsement", "AI仿冒名人", "AI换脸"],
+      "cryptoScam": ["free bitcoin", "double your crypto", "airdrop claim", "connect wallet", "verify wallet", "giveaway", "verification fee to withdraw"],
+      "jobScam": ["no interview required", "upfront payment", "beat the ATS", "package forwarding job", "work from home guaranteed income"],
+      "impersonationScam": ["new number mom", "urgent money transfer", "grandchild emergency", "hi dad new phone"]
     },
     "correctionMessages": {
       "healthPseudoscience": "No supplement can legally claim to cure, treat, or prevent any disease (FDA/FTC). 'Miracle cure' and 'ancient secret' are marketing language, not medical evidence. Consult a licensed healthcare professional.",
@@ -377,13 +575,17 @@
       "supplementScam": "'All-natural' is not a legal term for 'safe.' 'FDA-registered facility' only means the manufacturing site is registered, not that the product is verified for effectiveness. 'Better than Ozempic' is an unsubstantiated claim.",
       "fakeDeadline": "Legitimate government programs have standard enrollment periods, not 'act now' pressure. Urgency language is the #1 red flag for scams targeting seniors.",
       "deepfakeDoctor": "AI-generated 'doctors' are increasingly common on social media. Check for: lip sync mismatches, unnatural facial movements, robotic voice, or the same 'doctor' appearing on multiple unrelated accounts. Verify any health claim with a real healthcare provider.",
-      "cryptoScam": "No legitimate crypto project will ask you to 'send crypto to receive more.' 'Double your investment' is always a scam. Blue checkmarks on X/Twitter can be purchased and do not verify identity. Never connect your wallet to unknown sites."
+      "cryptoScam": "No legitimate crypto project will ask you to 'send crypto to receive more.' 'Double your investment' is always a scam. Blue checkmarks on X/Twitter can be purchased and do not verify identity. Never connect your wallet to unknown sites.",
+      "jobScam": "Legitimate employers never ask for upfront payments. 'Beat the ATS' is a common scam phrase. Real recruiters use company email, not Telegram/WhatsApp. If asked to download code from GitHub for an 'assessment,' verify the company independently first.",
+      "impersonationScam": "If a family member messages from a new number asking for money, call their old number to verify. WhatsApp will never ask you to share your verification code. 'Grandparent scams' exploit urgency and trust—always verify through a separate channel."
     },
     "preventionTips": {
       "general": "1. Verify credentials through official medical boards 2. 'FDA-registered' ≠ 'FDA-approved' 3. Never give personal info from social media ads 4. Use ScamAdviser or TruthScore to check product legitimacy",
       "benefitScam": "1. Medicare never contacts you unsolicited 2. No real program requires calling from a Facebook ad 3. Check .gov domains for real programs 4. Report scam ads to FTC at reportfraud.ftc.gov",
       "deepfakeDoctor": "1. Look for lip sync mismatches and robotic voice 2. Search the 'doctor' name + scam on Google/Reddit 3. Real doctors don't sell supplements on TikTok 4. Check if YouTube/Facebook has labeled content as AI-generated",
-      "cryptoScam": "1. Never send crypto to strangers 2. Blue checkmark ≠ verified identity (since 2023) 3. Don't click crypto links from social media 4. Use ScamSniffer or similar tools to check wallet connections"
+      "cryptoScam": "1. Never send crypto to strangers 2. Blue checkmark ≠ verified identity (since 2023) 3. Don't click crypto links from social media 4. Use ScamSniffer or similar tools to check wallet connections",
+      "jobScam": "1. Real recruiters use company email, not Telegram 2. Never pay upfront fees for a job 3. Verify company independently before sharing personal info 4. 'Beat the ATS' = scam phrase 5. GitHub repos for 'assessments' may contain malware",
+      "impersonationScam": "1. Call the person's old number to verify 2. Never share WhatsApp verification codes 3. Set up two-step verification on WhatsApp 4. Be suspicious of urgent money requests from new numbers"
     }
   },
 
@@ -448,7 +650,12 @@
     "astroturfing": 16,
     "fakeBenefitScam": 20,
     "commentBotRatio": 15,
-    "coordinatedTiming": 14
+    "coordinatedTiming": 14,
+    "jobScam": 20,
+    "impersonationScam": 18,
+    "telegramGroupScam": 18,
+    "withdrawalTrap": 22,
+    "profileHijack": 16
   },
 
   "thresholds": {
