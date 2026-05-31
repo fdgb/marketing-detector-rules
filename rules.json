@@ -1,7 +1,7 @@
 {
-  "version": 6,
-  "updatedAt": "2026-05-31T17:30:00+08:00",
-  "changelog": "v6: 新增LinkedIn/Telegram/WhatsApp/Pinterest规则，求职诈骗检测，杀猪盘全链路检测，AI仿冒名人deepfake增强，多语言模式补充",
+  "version": 7,
+  "updatedAt": "2026-05-31T18:25:00+08:00",
+  "changelog": "v7: v6.1深度解读引擎上线，40+信号解读模板，低风险安全解读（正面信号+缺失营销手法），描述更新",
 
   "bilibili": {
     "adParams": [
@@ -17,275 +17,6 @@
       { "pattern": "spm_id_from=333\\..*\\.tianma\\..*", "label": "天马算法推荐" }
     ],
     "organicSourceParam": "vd_source"
-  },
-
-  "youtube": {
-    "adSignals": {
-      "description": "YouTube广告/推广视频信号",
-      "adBadge": ["AD", "Promoted", "Sponsored", "Paid promotion"],
-      "sponsorTags": ["sponsored", "paid partnership", "ad"],
-      "descriptionPatterns": ["affiliate link", "use code", "discount code", "promo code", "link in description", "click the link below"]
-    },
-    "deepfakeSignals": {
-      "description": "AI生成假医生/TikDoc检测信号",
-      "visualGlitches": ["lip sync mismatch", "unnatural facial movement", "edge artifacts", "robotic voice"],
-      "aiContentLabel": ["Altered or synthetic content", "AI-generated", "Synthetic media"]
-    },
-    "dataAnomaly": {
-      "hiddenDislikeRatio": true,
-      "commentBotRatio": true,
-      "lowEngagementRate": 0.005
-    }
-  },
-
-  "facebook": {
-    "adSignals": {
-      "description": "Facebook广告/虚假福利信号",
-      "sponsoredLabel": ["Sponsored", "Paid for by", "Ad"],
-      "scamAccountPatterns": ["Senior Health", "Medicare Benefits", "Health Benefits", "American Relief", "Everyday Help", "Golden Help", "Premium Senior"]
-    },
-    "scamPatterns": {
-      "description": "Facebook老年医疗骗局模式",
-      "fakeBenefit": ["free benefits", "you qualify for", "biggest benefit of", "spending allowance", "grocery card", "flex card", "health allowance card"],
-      "fakeDeadline": ["enrollment closes today", "act now", "last chance", "expires at midnight", "deadline", "limited time"],
-      "fakeGovernment": ["Medicare", "Social Security", "government program", "official notice", "you're eligible"]
-    }
-  },
-
-  "twitter": {
-    "botSignals": {
-      "description": "Twitter/X机器人/诈骗信号",
-      "cryptoScamPhrases": ["giveaway", "send me", "double your", "claim your", "free tokens", "airdrop", "limited supply"],
-      "impersonationPatterns": ["official support", "admin", "moderator", "team member"],
-      "botReplyPatterns": ["DM me for link", "made \\$\\d+ in", "been using this for weeks", "thought it was a scam too", "payout came quick"]
-    },
-    "urlExploit": {
-      "description": "URL预览欺骗检测",
-      "domainMismatch": true,
-      "linkShortenerAbuse": ["bit.ly", "t.co"],
-      "punycodeRisk": true
-    }
-  },
-
-  "tiktok_intl": {
-    "deepfakeDoctor": {
-      "description": "TikTok国际版AI假医生(TikDoc)检测",
-      "accountPatterns": ["healthytips\\d+", "wellness\\d+", "health\\.tips", "sante\\w+", "doctor\\w*advice", "medical\\w*tips"],
-      "videoPatterns": ["as a doctor with \\d+ years", "nobody told you", "do this every day", "one simple trick", "doctors hate this"],
-      "productPush": ["natural extract", "natural alternative", "better than Ozempic", "link in bio", "check my bio", "amazon link"]
-    },
-    "misinformationPatterns": {
-      "description": "TikTok健康虚假信息模式",
-      "mentalHealthMisinfo": ["self-diagnos", "you might have", "signs you have", "if you feel this way you have", "therapy hack"],
-      "diyHealthHack": ["DIY braces", "file your teeth", "mewing", "jawline exercise", "face shape hack"],
-      "supplementScam": ["natural cure", "ancient remedy", "tribal secret", "miracle supplement", "FDA registered facility"]
-    }
-  },
-
-  "reddit": {
-    "astroturfing": {
-      "description": "Reddit虚假口碑/营销水军检测",
-      "threePostPattern": {
-        "description": "Reddit三帖式营销水军模式",
-        "step1": "case study post — 'I made $X using this framework' (tool mentioned in step 2)",
-        "step2": "outcome post — 'I achieved [result]. Copy this.' (same tool, different sub)",
-        "step3": "concern troll — 'Should this tool be banned?' (reverse-psychology awareness)"
-      },
-      "detectionSignals": [
-        "same account posting in 3+ unrelated subreddits within 2-4 weeks",
-        "specific income claims with zero evidence",
-        "polished marketing copy in casual subreddit",
-        "templated comments — 'Really interesting to see the full picture'",
-        "silence when challenged for proof",
-        "new account with immediate sophisticated on-topic content",
-        "coordinated posting across 5+ subreddits within 24 hours"
-      ]
-    },
-    "fakeReview": {
-      "description": "虚假评论网络检测",
-      "signals": ["near-identical phrasing across multiple accounts", "unusual engagement spikes outside normal hours", "accounts with zero history posting expert-level content", "AI-generated language patterns"]
-    }
-  },
-
-  "instagram": {
-    "influencerScam": {
-      "description": "Instagram网红健康/美容骗局检测",
-      "wellnessScamPhrases": ["detox", "cleanse", "rejuvenate", "optimize", "glow up", "transform your body", "miracle oil", "ancient secret"],
-      "fakeBeforeAfter": true,
-      "carouselScam": {
-        "description": "轮播图产品推广模式",
-        "pattern": "health claim in first slides → product link in last slide / bio",
-        "signals": ["link in bio", "swipe up", "use my code", "discount", "limited stock"]
-      }
-    },
-    "deepfakeEndorsement": {
-      "description": "AI生成虚假名人/医生代言",
-      "signals": ["celebrity face + health product", "doctor in white coat + supplement", "inconsistent account history", "stock photo or AI-generated profile"]
-    }
-  },
-
-  "linkedin": {
-    "description": "LinkedIn求职/投资诈骗检测",
-    "jobScam": {
-      "description": "假招聘/假猎头检测",
-      "redFlags": [
-        "no formal interview required",
-        "upfront payment for registration/verification/license",
-        "vague job description with no clear responsibilities",
-        "salary seems too good for the role",
-        "recruiter profile created recently with limited connections",
-        "asked to move to Telegram/WhatsApp for interview",
-        "package forwarding / reshipping job",
-        "beat the ATS / ATS parsing report"
-      ],
-      "moneyMuleSignals": [
-        "receive and forward packages",
-        "transfer funds between accounts",
-        "process payments from home",
-        "commission-based package handling"
-      ],
-      "techScamSignals": [
-        "download this GitHub repo for assessment",
-        "run this code for the interview",
-        "install this tool for the project",
-        "evaluate our MVP product"
-      ]
-    },
-    "investmentScam": {
-      "description": "LinkedIn投资诈骗(白领杀猪盘)",
-      "signals": [
-        "exclusive crypto opportunity",
-        "guaranteed returns on investment",
-        "insider trading knowledge",
-        "AI trading algorithm",
-        "move conversation to private channel",
-        "show fake trading screenshots"
-      ]
-    },
-    "profileHijack": {
-      "description": "LinkedIn账户劫持/身份盗窃",
-      "signals": [
-        "LinkedIn optimization service",
-        "improve your profile visibility",
-        "resume rewriting for ATS",
-        "provide your login credentials",
-        "verify your identity via this link"
-      ]
-    }
-  },
-
-  "telegram": {
-    "description": "Telegram加密货币/投资群组诈骗检测",
-    "pigButcheringGroup": {
-      "description": "Telegram杀猪盘群组检测",
-      "entrySignals": [
-        "auto-added to investment group",
-        "VIP crypto/trading group",
-        "wrong number introduction",
-        "friendly stranger introduces opportunity",
-        "professor/analyst giving free signals"
-      ],
-      "operationSignals": [
-        "guaranteed daily/weekly returns",
-        "screenshot of massive profits",
-        "thank you testimonials from 'members'",
-        "download trading app via APK link",
-        "not available on Play Store/App Store",
-        "small withdrawal allowed initially",
-        "verification fee / tax to withdraw",
-        "security deposit required"
-      ],
-      "escalationSignals": [
-        "market about to surge",
-        "qualify for VIP with more deposit",
-        "opportunity won't last",
-        "take a loan to invest more",
-        "your account is under review",
-        "pay clearance/compliance fee"
-      ]
-    },
-    "signalGroupScam": {
-      "description": "虚假交易信号群组(10万+粉丝)",
-      "signals": [
-        "channel with 100K+ subscribers promotes platform",
-        "platform domain registered days before promotion",
-        "arbitrage opportunity exclusive to this platform",
-        "allow small withdrawals then lock large ones",
-        "demand BTC verification fee (~$5000)"
-      ]
-    }
-  },
-
-  "whatsapp": {
-    "description": "WhatsApp连锁转发/冒充诈骗检测",
-    "chainForward": {
-      "description": "WhatsApp连锁转发健康骗局",
-      "signals": [
-        "forward this to everyone you know",
-        "share before they delete this",
-        "medical breakthrough shared only here",
-        "doctor's secret remedy forwarded",
-        "government hiding this cure",
-        "sent from a friend who is a doctor"
-      ]
-    },
-    "impersonationScam": {
-      "description": "WhatsApp冒充身份诈骗(祖父母骗局)",
-      "signals": [
-        "hi mom/dad, new number",
-        "my phone is broken, this is my new number",
-        "need money urgently, can't talk now",
-        "don't tell anyone about this",
-        "wire transfer immediately",
-        "grandchild in emergency"
-      ]
-    },
-    "accountTakeover": {
-      "description": "WhatsApp账户接管诈骗",
-      "signals": [
-        "vote for my child competition link",
-        "enter this 6-digit code to help me",
-        "urgent help needed click this link",
-        "verify your WhatsApp account"
-      ]
-    },
-    "healthSupplementScam": {
-      "description": "WhatsApp保健品推销骗局",
-      "signals": [
-        "traditional Chinese medicine recommended by professor",
-        "celebrity endorsement for health product",
-        "upgrade to premium formula",
-        "limited stock of miracle remedy",
-        "cash on delivery for initial trust"
-      ]
-    }
-  },
-
-  "pinterest": {
-    "description": "Pinterest伪健康/虚假保健品检测",
-    "supplementScam": {
-      "description": "Pinterest虚假保健品/减肥骗局",
-      "signals": [
-        "miracle weight loss",
-        "lose 20 lbs in 2 weeks",
-        "natural fat burner",
-        "detox tea recipe",
-        "celebrity diet secret",
-        "before and after transformation",
-        "link to supplement purchase",
-        "AI-generated before/after photos"
-      ]
-    },
-    "diyHealthRisk": {
-      "description": "Pinterest DIY健康风险内容",
-      "signals": [
-        "homemade essential oil remedy",
-        "DIY natural antibiotic",
-        "natural alternative to medication",
-        "home remedy for serious condition",
-        "herbal cure recipe pin"
-      ]
-    }
   },
 
   "accountNamePatterns": {
@@ -312,20 +43,7 @@
       "博士聊.*",
       ".*觉醒技能$",
       ".*洞察$",
-      ".*复盘$",
-      "^healthytips\\d+$",
-      "^wellness\\d+$",
-      "^health\\.tips",
-      "^sante\\w+\\.fr\\w*$",
-      "^santnergie",
-      "^santeconseils",
-      "^doctor\\w*advice",
-      "^medical\\w*tips",
-      "^Senior\\s*Health",
-      "^Medicare.*Benefits",
-      "^Health.*Benefits",
-      "^Golden.*Help",
-      "^Premium.*Senior"
+      ".*复盘$"
     ],
     "mediumRisk": [
       "^.{2,4}$",
@@ -342,14 +60,7 @@
       "知识$",
       "NHS.*",
       "法华.*",
-      "传统文化.*",
-      ".*好讲堂$",
-      ".*鲜闻$",
-      "^wellness\\w*$",
-      "^health\\w*$",
-      "^daily\\s*health",
-      "^natural\\s*remed",
-      "^holistic\\s*heal"
+      "传统文化.*"
     ],
     "trusted": [
       "实验室$",
@@ -359,10 +70,7 @@
       "科普",
       "大学$",
       "医院$",
-      "协会$",
-      "^(?:Dr|Doctor|Prof)\\s+[A-Z]",
-      "^[A-Z][a-z]+\\s+(?:MD|PhD|DO|RN)$",
-      "(?:Hospital|Clinic|University|Institute|Lab)$"
+      "协会$"
     ]
   },
 
@@ -410,47 +118,7 @@
       "\\d+人吃了\\d+人",
       "绝了",
       "不敢想象",
-      "摆摊.*月入",
-      "可能会失明",
-      "可能会致癌",
-      "可能会瘫痪",
-      "关乎寿命",
-      "决定寿命",
-      "影响寿命",
-      "再饿也要忍住",
-      "老祖宗.*治病",
-      "当作口诀",
-      "终于找到了",
-      "reverses?\\s+(?:diabetes|cancer|disease)",
-      "melts?\\s+(?:belly\\s+fat|fat\\s+overnight)",
-      "cures?\\s+.+\\s+in\\s+\\d+\\s+days?",
-      "restores?\\s+(?:vision|hearing|memory)\\s+in",
-      "doctors?\\s+hate\\s+this",
-      "one\\s+weird\\s+trick",
-      "big\\s+pharma\\s+(?:doesn'?t|won'?t)\\s+(?:want|tell)",
-      "banned\\s+(?:by|from)\\s+(?:big\\s+pharma|the\\s+FDA|government)",
-      "miracle\\s+(?:cure|supplement|remedy|oil|drink|diet)",
-      "you\\s+qualify\\s+for",
-      "free\\s+(?:health|medical|medicare|prescription|grocery)\\s+(?:benefits?|card|allowance)",
-      "claim\\s+your\\s+free",
-      "double\\s+your\\s+(?:money|crypto|investment|bitcoin)",
-      "\\$?\\d[\\d,]+\\s+(?:a\\s+day|per\\s+day|every\\s+day|in\\s+a\\s+week|passive)",
-      "make\\s+\\$?\\d[\\d,]+\\s+(?:from\\s+home|online|per\\s+month|side\\s+hustle)",
-      "beat\\s+the\\s+ATS",
-      "guaranteed\\s+(?:job|placement|income|returns|hiring)",
-      "no\\s+(?:interview|experience)\\s+(?:required|needed)",
-      "work\\s+from\\s+home.*\\$\\d",
-      "package\\s+(?:forwarding|handling|reshipping)",
-      "wrong\\s+number.*(?:invest|crypto|opportunity)",
-      "VIP\\s+(?:crypto|trading|investment|signal)\\s+group",
-      "professor.*(?:signal|tip|alert|strategy)",
-      "guaranteed.*(?:daily|weekly|monthly)\\s+(?:profit|return|income)",
-      "download.*(?:APK|app).*via\\s+(?:link|Telegram)",
-      "verification\\s+fee|tax\\s+(?:to\\s+)?withdraw|clearance\\s+fee",
-      "forward\\s+this\\s+(?:to|message|now)",
-      "share\\s+before.*delete",
-      "new\\s+number.*(?:mom|dad|family|urgent)",
-      "urgent.*(?:money|transfer|help|wire)"
+      "摆摊.*月入"
     ],
     "mediumRisk": [
       "震惊",
@@ -476,116 +144,32 @@
       "复盘.*转折",
       "只做对了",
       "\\d+岁.*副业",
-      "女性.*月入",
-      "最好背下",
-      "很珍贵",
-      "shocking",
-      "you\\s+won'?t\\s+believe",
-      "what\\s+(?:they|big\\s+pharma)\\s+(?:don'?t|won'?t)\\s+tell\\s+you",
-      "the\\s+truth\\s+about",
-      "nobody\\s+told\\s+you",
-      "do\\s+this\\s+(?:every\\s+day|before\\s+bed|first\\s+thing)",
-      "stop\\s+(?:eating|drinking|doing)\\s+this",
-      "I\\s+(?:made|earned|lost)\\s+\\$",
-      "side\\s+hustle\\s+\\$",
-      "natural\\s+alternative\\s+to",
-      "FDA\\s+(?:registered|approved)\\s+facility"
+      "女性.*月入"
     ]
   },
 
   "contentPatterns": {
     "workplaceStory": {
-      "roundSalary": "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w|made\\s+\\$[\\d,]+\\s+(?:per|a|every)\\s+(?:month|week|day)",
-      "vagueSource": "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜|I have a friend who|my colleague|a buddy of mine",
-      "plotHook": "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却|but then I|you won'?t believe what|turns out"
+      "roundSalary": "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w",
+      "vagueSource": "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜",
+      "plotHook": "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却"
     },
     "aiSideHustle": {
-      "incomeClaim": "月入|日赚|收益|到账|提现|passive income|side hustle|make money online|earn from home",
-      "coursePitch": "点击链接|扫码领取|免费领取|限时免费|加群|click the link|free training|limited spots|join my group|DM me"
+      "incomeClaim": "月入|日赚|收益|到账|提现",
+      "coursePitch": "点击链接|扫码领取|免费领取|限时免费|加群"
     },
     "elderlyHealth": {
-      "miracleCure": "包治百病|根治|治愈率|神奇效果|奇效|见效快|miracle cure|natural remedy|ancient secret|heals? naturally|100% effective",
-      "authorityBorrow": "央视报道|上过央视|老中医|华佗|李时珍|张仲景|孙思邈|NHS|诺贝尔|as seen on|doctor recommended|clinically proven|Mayo Clinic|FDA approved|Harvard study",
-      "foodTaboo": "不能吃|不能一起吃|食物相克|不能过夜|食物禁忌|睡前不能吃|never eat|food combination|toxic together|deadly food combo",
-      "healthAnxiety": "正在衰竭|再不养|来不及|90%.*缺|你的.*正在求救|关乎寿命|决定寿命|影响寿命|再饿也要忍住|your body is|silently killing|you'?re at risk|don'?t ignore these signs|could be fatal",
-      "folkRemedy": "偏方|秘方|不传秘方|民间偏方|老祖宗|口口相传|很珍贵|当作口诀|终于找到了|ancient remedy|tribal secret|grandma'?s recipe|old wives'? cure|forgotten cure",
-      "forwardReward": "转发.*有礼|转发.*好礼|转发朋友圈|转发全家|share this|forward to|send to everyone you know|share before they delete",
-      "extremeThreat": "可能会失明|可能会致癌|可能会瘫痪|致癌率|失明率|食物.*失明|食物.*致癌|could go blind|may cause cancer|risk of paralysis|lead to blindness|cause tumors"
+      "miracleCure": "包治百病|根治|治愈率|神奇效果|奇效|见效快",
+      "authorityBorrow": "央视报道|上过央视|老中医|华佗|李时珍|张仲景|孙思邈|NHS|诺贝尔",
+      "foodTaboo": "不能吃|不能一起吃|食物相克|不能过夜|食物禁忌|睡前不能吃",
+      "healthAnxiety": "正在衰竭|再不养|来不及|90%.*缺|你的.*正在求救",
+      "folkRemedy": "偏方|秘方|不传秘方|民间偏方|老祖宗|口口相传|很珍贵",
+      "forwardReward": "转发.*有礼|转发.*好礼|转发朋友圈|转发全家"
     },
     "sideHustleVariant": {
-      "femalPersona": "女人.*月入|夫人.*觉醒|宝妈.*副业|女性.*赚钱|moms? making|women earning|stay-at-home income",
-      "reviewStyle": "复盘|关键转折|我做对了|经验分享|方法论|my review|what I learned|key takeaway|how I did it|case study",
-      "diaryPersona": "日记|84年|42岁|大学老师.*副业|职业转型|my journey|day in the life|how I quit my job|career change story"
-    },
-    "deepfakeDoctor": {
-      "description": "AI生成假医生/虚假医疗代言/AI仿冒名人检测",
-      "impersonationPhrases": "as a doctor with \\d+ years|I'?ve been a (?:surgeon|physician|specialist) for|in my \\d+ years of practice|trust me I'?m a doctor",
-      "productPushPhrases": "this (?:supplement|extract|formula) is|better than (?:Ozempic|prescription|medication)|natural alternative to|check (?:the )?link in (?:my )?bio|available on (?:Amazon|our website)",
-      "fakeCredentialPhrases": "board certified|top specialist|leading expert|world'?s best|award-winning physician",
-      "celebrityImpersonation": "endorsed by (?:Dr\\.?|Professor) [A-Z][a-z]+|as (?:Dr\\.?|Professor) [A-Z][a-z]+ (?:said|recommends|discovered)|[A-Z][a-z]+ (?:breakthrough|discovery|secret)",
-      "aiGeneratedSignals": "mouth moves body doesn'?t|channel uploaded \\d+ videos in \\d+ (?:days|weeks)|disclaimer in bio|AI generated content notice|synthetic media label",
-      "visualRedFlags": ["lip sync mismatch", "unnatural blinking", "edge artifacts around face", "robotic voice inflection", "consistent background across different 'doctors'", "same face across multiple accounts", "virtual background instead of real office"]
-    },
-    "cryptoScam": {
-      "description": "加密货币诈骗检测(Twitter/YouTube/Telegram)",
-      "giveawayScam": "free (?:bitcoin|crypto|tokens|NFT)|double your (?:BTC|ETH|crypto|investment)|airdrop claim|send me .* I'?ll send back",
-      "impersonationScam": "official support|admin here|team member|verify your wallet|connect your wallet|claim your airdrop",
-      "pigButchering": "I made \\$\\d[\\d,]+ (?:in|from) (?:crypto|trading|mining)|this (?:platform|exchange) is amazing|high returns guaranteed|low risk high reward",
-      "telegramGroupScam": "added to (?:VIP|investment|crypto|trading) group|professor.*(?:signal|tip|strategy)|guaranteed (?:daily|weekly) (?:profit|return|payout)|download (?:trading|exchange) app via (?:link|APK)",
-      "withdrawalTrap": "(?:verification|tax|clearance|security|compliance) fee (?:required|to withdraw|before withdrawal)|pay (?:fee|tax|deposit) to (?:release|unlock|access) (?:your )?(?:funds|profits|money|balance)",
-      "fakeExchange": "domain registered (?:days|recently) before promotion|not (?:available|listed) on (?:Play Store|App Store)|arbitrage (?:opportunity|bot|platform) exclusive"
-    },
-    "astroturfing": {
-      "description": "虚假口碑/营销水军检测(Reddit/论坛)",
-      "threePostPattern": "I made \\$\\d[\\d,]+ (?:using|with) this|I achieved .+\\. Copy this|should (?:this|\\w+) be banned",
-      "sockPuppetSignals": "been using this for weeks|payout came quick|thought it was a scam too|really interesting to see|I was skeptical but",
-      "coordinatedSignals": "same product mentioned in \\d+\\+ (?:subs|threads|posts) within \\d+ hours"
-    },
-    "jobScam": {
-      "description": "求职诈骗检测(LinkedIn/招聘平台)",
-      "fakeRecruiter": "open to work|background matches our needs|opportunity to discuss|expanding our team|reach out to discuss|your profile caught my attention",
-      "platformShift": "let'?s continue on (?:Telegram|WhatsApp|Signal)|move to private channel|join our (?:internal|private) (?:group|channel)|add me on (?:Telegram|WhatsApp)",
-      "upfrontPayment": "registration fee|verification fee|training cost|license fee|equipment deposit|background check fee",
-      "techExploit": "download this (?:repo|project|repository) for (?:assessment|evaluation)|run this (?:code|project|tool)|install this (?:extension|plugin|software)|evaluate our (?:MVP|product|prototype)"
-    },
-    "impersonationScam": {
-      "description": "冒充身份诈骗(WhatsApp祖父母骗局/LinkedIn账户劫持)",
-      "grandparentScam": "new number|my phone (?:broke|is broken|died)|this is my new number|can'?t talk right now|need (?:money|help) (?:urgently|immediately|right away)|don'?t tell (?:anyone|mom|dad)",
-      "accountHijack": "optimize your (?:LinkedIn|profile|resume)|improve your (?:visibility|reach|ranking)|provide your (?:login|credentials|password)|verify (?:identity|account) via (?:link|this)"
-    }
-  },
-
-  "internationalElderlyRules": {
-    "description": "国际老年人营销号专项检测规则(英语为主)",
-    "keywords": {
-      "healthPseudoscience": ["miracle cure", "natural remedy", "ancient secret", "tribal secret", "forbidden cure", "hidden cure", "what doctors won't tell you", "big pharma doesn't want you to know"],
-      "authorityImpersonation": ["as seen on TV", "doctor recommended", "FDA approved facility", "clinically proven", "Harvard study", "Mayo Clinic", "NHS approved", "board certified"],
-      "benefitScam": ["free benefits", "you qualify for", "spending allowance", "grocery card", "flex card", "health allowance card", "Medicare benefits", "prescription savings"],
-      "supplementScam": ["all-natural", "FDA-registered facility", "GMP certified", "non-GMO", "made in USA", "ancient formula", "natural extract", "better than Ozempic"],
-      "fakeDeadline": ["act now", "last chance", "expires today", "enrollment closes", "limited time offer", "midnight deadline", "don't wait"],
-      "deepfakeDoctor": ["AI-generated doctor", "TikDoc", "synthetic physician", "fake medical advice", "deepfake health endorsement", "AI仿冒名人", "AI换脸"],
-      "cryptoScam": ["free bitcoin", "double your crypto", "airdrop claim", "connect wallet", "verify wallet", "giveaway", "verification fee to withdraw"],
-      "jobScam": ["no interview required", "upfront payment", "beat the ATS", "package forwarding job", "work from home guaranteed income"],
-      "impersonationScam": ["new number mom", "urgent money transfer", "grandchild emergency", "hi dad new phone"]
-    },
-    "correctionMessages": {
-      "healthPseudoscience": "No supplement can legally claim to cure, treat, or prevent any disease (FDA/FTC). 'Miracle cure' and 'ancient secret' are marketing language, not medical evidence. Consult a licensed healthcare professional.",
-      "authorityImpersonation": "'FDA-registered facility' ≠ FDA-approved. A white coat costs $20 on Amazon. Verify credentials through state medical boards. 'As seen on TV' means paid advertising, not endorsement.",
-      "benefitScam": "Medicare will never contact you unsolicited about new benefits. 'Free grocery/health cards' are common scams targeting seniors. No legitimate program requires you to 'call now' from a Facebook ad.",
-      "supplementScam": "'All-natural' is not a legal term for 'safe.' 'FDA-registered facility' only means the manufacturing site is registered, not that the product is verified for effectiveness. 'Better than Ozempic' is an unsubstantiated claim.",
-      "fakeDeadline": "Legitimate government programs have standard enrollment periods, not 'act now' pressure. Urgency language is the #1 red flag for scams targeting seniors.",
-      "deepfakeDoctor": "AI-generated 'doctors' are increasingly common on social media. Check for: lip sync mismatches, unnatural facial movements, robotic voice, or the same 'doctor' appearing on multiple unrelated accounts. Verify any health claim with a real healthcare provider.",
-      "cryptoScam": "No legitimate crypto project will ask you to 'send crypto to receive more.' 'Double your investment' is always a scam. Blue checkmarks on X/Twitter can be purchased and do not verify identity. Never connect your wallet to unknown sites.",
-      "jobScam": "Legitimate employers never ask for upfront payments. 'Beat the ATS' is a common scam phrase. Real recruiters use company email, not Telegram/WhatsApp. If asked to download code from GitHub for an 'assessment,' verify the company independently first.",
-      "impersonationScam": "If a family member messages from a new number asking for money, call their old number to verify. WhatsApp will never ask you to share your verification code. 'Grandparent scams' exploit urgency and trust—always verify through a separate channel."
-    },
-    "preventionTips": {
-      "general": "1. Verify credentials through official medical boards 2. 'FDA-registered' ≠ 'FDA-approved' 3. Never give personal info from social media ads 4. Use ScamAdviser or TruthScore to check product legitimacy",
-      "benefitScam": "1. Medicare never contacts you unsolicited 2. No real program requires calling from a Facebook ad 3. Check .gov domains for real programs 4. Report scam ads to FTC at reportfraud.ftc.gov",
-      "deepfakeDoctor": "1. Look for lip sync mismatches and robotic voice 2. Search the 'doctor' name + scam on Google/Reddit 3. Real doctors don't sell supplements on TikTok 4. Check if YouTube/Facebook has labeled content as AI-generated",
-      "cryptoScam": "1. Never send crypto to strangers 2. Blue checkmark ≠ verified identity (since 2023) 3. Don't click crypto links from social media 4. Use ScamSniffer or similar tools to check wallet connections",
-      "jobScam": "1. Real recruiters use company email, not Telegram 2. Never pay upfront fees for a job 3. Verify company independently before sharing personal info 4. 'Beat the ATS' = scam phrase 5. GitHub repos for 'assessments' may contain malware",
-      "impersonationScam": "1. Call the person's old number to verify 2. Never share WhatsApp verification codes 3. Set up two-step verification on WhatsApp 4. Be suspicious of urgent money requests from new numbers"
+      "femalPersona": "女人.*月入|夫人.*觉醒|宝妈.*副业|女性.*赚钱",
+      "reviewStyle": "复盘|关键转折|我做对了|经验分享|方法论",
+      "diaryPersona": "日记|84年|42岁|大学老师.*副业|职业转型"
     }
   },
 
@@ -595,10 +179,7 @@
     "extremeFavoriteRatio": 7.0,
     "emptyBio": true,
     "lowLikeRate": 0.01,
-    "extremeLowLikeRate": 0.002,
-    "commentBotRatio": true,
-    "newAccountWithHighEngagement": true,
-    "coordinatedTiming": true
+    "extremeLowLikeRate": 0.002
   },
 
   "elderlyRules": {
@@ -607,23 +188,21 @@
       "healthPseudoscience": ["偏方", "秘方", "根治", "包治", "奇效", "见效快", "不传秘方", "老祖宗"],
       "authorityImpersonation": ["老中医", "华佗", "李时珍", "央视报道", "上过央视", "NHS", "诺贝尔"],
       "foodTaboo": ["不能吃", "不能一起吃", "食物相克", "不能过夜", "睡前不能"],
-      "healthAnxiety": ["正在衰竭", "再不养", "来不及", "你的正在求救", "关乎寿命", "决定寿命", "影响寿命", "再饿也要忍住"],
+      "healthAnxiety": ["正在衰竭", "再不养", "来不及", "你的正在求救"],
       "supplementSales": ["限时优惠", "仅剩", "最后机会", "赶紧下单"],
-      "forwardInducement": ["转发有礼", "转发全家受益", "转发朋友圈"],
-      "extremeThreat": ["可能会失明", "可能会致癌", "可能会瘫痪", "食物失明", "食物致癌"]
+      "forwardInducement": ["转发有礼", "转发全家受益", "转发朋友圈"]
     },
     "correctionMessages": {
       "healthPseudoscience": "不存在能治百病的偏方。任何声称「包治百病」「根治」的都是虚假宣传。健康问题应咨询正规医生，不要轻信民间偏方。",
       "authorityImpersonation": "正规医疗机构不会通过短视频/公众号推销产品或秘方。请检查所谓的「协会」「专家」是否真实存在。「华佗秘方」等历史人物名义的偏方均不可考。",
       "foodTaboo": "食物相克已被中国营养学会多次辟谣，不存在所谓的食物相克。食物没有绝对「不能吃」，只有量和个人体质差异。",
       "healthAnxiety": "这是典型的恐吓营销话术，制造焦虑后推销产品。正规营养补充应遵医嘱，不应被营销内容恐吓。",
-      "forwardInducement": "「转发有礼」类内容是商业推广信号，利用社交链低成本扩散。正规健康科普不会要求转发扩散。",
-      "extremeThreat": "「可能会失明/致癌/瘫痪」等极端后果声明是虚假恐吓的升级版。食物搭配不可能导致感官丧失或癌症。这类话术比「不能吃」更危险，直接利用恐惧操控行为。"
+      "forwardInducement": "「转发有礼」类内容是商业推广信号，利用社交链低成本扩散。正规健康科普不会要求转发扩散。"
     },
     "preventionTips": {
-      "general": "1. 看到「根治」「包治」「秘方」直接拉黑 2. 健康问题咨询正规医生 3. 帮家里长辈设置营销号屏蔽 4. 用营销号鉴别网页版/小程序检测",
-      "foodTaboo": "1. 食物相克已被科学证伪 2. 「不能吃」绝对化表述=营销号特征 3. 「可能会失明/致癌」=极端恐吓升级 4. 搜索相关辟谣信息验证",
-      "authorityCheck": "1. 核实专家/机构是否真实存在 2. 正规医生不会网上卖药 3. 「央视报道过」≠央视背书 4. 电视台传播偏方≠医学验证"
+      "general": "1. 看到「根治」「包治」「秘方」直接拉黑 2. 健康问题咨询正规医生 3. 帮家里长辈设置营销号屏蔽 4. 安装营销号鉴别浏览器插件",
+      "foodTaboo": "1. 食物相克已被科学证伪 2. 「不能吃」绝对化表述=营销号特征 3. 搜索相关辟谣信息验证",
+      "authorityCheck": "1. 核实专家/机构是否真实存在 2. 正规医生不会网上卖药 3. 「央视报道过」≠央视背书"
     }
   },
 
@@ -643,19 +222,7 @@
     "elderlyHealth": 18,
     "sideHustleVariant": 12,
     "extremeFavoriteRatio": 20,
-    "extremeLowLikeRate": 15,
-    "extremeThreat": 20,
-    "deepfakeDoctor": 22,
-    "cryptoScam": 18,
-    "astroturfing": 16,
-    "fakeBenefitScam": 20,
-    "commentBotRatio": 15,
-    "coordinatedTiming": 14,
-    "jobScam": 20,
-    "impersonationScam": 18,
-    "telegramGroupScam": 18,
-    "withdrawalTrap": 22,
-    "profileHijack": 16
+    "extremeLowLikeRate": 15
   },
 
   "thresholds": {
