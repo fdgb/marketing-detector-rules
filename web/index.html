@@ -466,22 +466,26 @@ body {
 
 // ===== 规则数据（内嵌，无需网络） =====
 const RULES = {
-  version: 3,
+  version: 6,
   accountNamePatterns: {
     highRisk: [
       ".*变现记$", ".*的AI日记$", ".*变现日记$", ".*副业日记$", ".*搞钱日记$",
       ".*赚钱记$", ".*搞钱记$", ".*源头日记$", "日入\\d+", "月入\\d+万?",
       "被动收入", "偏方.*大全", "秘方.*大全", ".*奇效方.*", ".*生活馆$",
       ".*小妙招$", "^gh[0-9a-f]+$", ".*片场$", ".*剧场$", "博士聊.*",
-      ".*觉醒技能$", ".*洞察$", ".*复盘$"
+      ".*觉醒技能$", ".*洞察$", ".*复盘$",
+      "^healthytips\\d+$", "^wellness\\d+$", "^sante\\w+\\.fr", "^Senior\\s*Health",
+      "^Medicare.*Benefits", "^Health.*Benefits", "^Golden.*Help", "^Premium.*Senior"
     ],
     mediumRisk: [
       "^.{2,4}$", "^(.{1,3})\\1$", "精选$", "说事$", "观察$", "前沿$",
       "必看$", "头条$", "妙招$", ".*趣闻$", "百科$", "知识$",
       "NHS.*", "法华.*", "传统文化.*",
-      ".*好讲堂$", ".*鲜闻$"
+      ".*好讲堂$", ".*鲜闻$",
+      "^wellness\\w*$", "^health\\w*$", "^daily\\s*health$", "^natural\\s*remed"
     ],
-    trusted: ["实验室$", "研究所$", "工作室$", "团队$", "科普", "大学$", "医院$", "协会$"]
+    trusted: ["实验室$", "研究所$", "工作室$", "团队$", "科普", "大学$", "医院$", "协会$",
+              "^(?:Dr|Doctor|Prof)\\s+[A-Z]", "(?:Hospital|Clinic|University|Institute|Lab)$"]
   },
   titlePatterns: {
     highRisk: [
@@ -496,7 +500,14 @@ const RULES = {
       "转发.*有礼", "转发.*好礼", "转发全家", "防癌食谱",
       "你的.*正在.*衰竭", "再不.*就来不及", "\\d+人吃了\\d+人", "绝了", "不敢想象", "摆摊.*月入",
       "可能会失明", "可能会致癌", "可能会瘫痪", "关乎寿命", "决定寿命", "影响寿命",
-      "再饿也要忍住", "老祖宗.*治病", "当作口诀", "终于找到了"
+      "再饿也要忍住", "老祖宗.*治病", "当作口诀", "终于找到了",
+      "reverses?\\s+(?:diabetes|cancer|disease)", "melts?\\s+(?:belly\\s+fat|fat\\s+overnight)",
+      "cures?\\s+.+\\s+in\\s+\\d+\\s+days?", "doctors?\\s+hate\\s+this",
+      "one\\s+weird\\s+trick", "big\\s+pharma\\s+(?:doesn'?t|won'?t)",
+      "miracle\\s+(?:cure|supplement|remedy|oil|diet)",
+      "you\\s+qualify\\s+for", "free\\s+(?:health|medical|medicare|grocery)\\s+(?:benefits?|card)",
+      "double\\s+your\\s+(?:money|crypto|investment)",
+      "make\\s+\\$?\\d[\\d,]+\\s+(?:from\\s+home|online|per\\s+month|side\\s+hustle)"
     ],
     mediumRisk: [
       "震惊", "居然", "竟然", "反转", "太.*了$",
@@ -504,32 +515,56 @@ const RULES = {
       "内部消息", "潜规则", "很多人不懂", "别再吃错",
       "睡前不能", "早餐不能", "避开内卷", "很简单", "这么简单",
       "复盘.*转折", "只做对了", "\\d+岁.*副业", "女性.*月入",
-      "最好背下", "很珍贵"
+      "最好背下", "很珍贵",
+      "shocking", "you\\s+won'?t\\s+believe", "what\\s+they\\s+don'?t\\s+tell",
+      "nobody\\s+told\\s+you", "natural\\s+alternative\\s+to",
+      "FDA\\s+(?:registered|approved)\\s+facility"
     ]
   },
   contentPatterns: {
     workplaceStory: {
-      roundSalary: "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w",
-      vagueSource: "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜",
-      plotHook: "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却"
+      roundSalary: "工资\\s*[\\d]+w|月薪\\s*[\\d]+w|薪资\\s*[\\d]+w|made\\s+\\$[\\d,]+\\s+(?:per|a)\\s+(?:month|week)",
+      vagueSource: "我有个朋友|我前同事|我同学|我一个哥们|我闺蜜|I have a friend who|my colleague",
+      plotHook: "结果.*竟然|没想到.*居然|可我.*反而|谁知.*却|but then I|you won'?t believe|turns out"
     },
     aiSideHustle: {
-      incomeClaim: "月入|日赚|收益|到账|提现",
-      coursePitch: "点击链接|扫码领取|免费领取|限时免费|加群"
+      incomeClaim: "月入|日赚|收益|到账|提现|passive income|side hustle|make money online|earn from home",
+      coursePitch: "点击链接|扫码领取|免费领取|限时免费|加群|click the link|free training|limited spots|DM me"
     },
     elderlyHealth: {
-      miracleCure: "包治百病|根治|治愈率|神奇效果|奇效|见效快",
-      authorityBorrow: "央视报道|上过央视|老中医|华佗|李时珍|张仲景|孙思邈|NHS|诺贝尔",
-      foodTaboo: "不能吃|不能一起吃|食物相克|不能过夜|食物禁忌|睡前不能吃",
-      healthAnxiety: "正在衰竭|再不养|来不及|90%.*缺|你的.*正在求救|关乎寿命|决定寿命|影响寿命|再饿也要忍住",
-      folkRemedy: "偏方|秘方|不传秘方|民间偏方|老祖宗|口口相传|很珍贵|当作口诀|终于找到了",
-      forwardReward: "转发.*有礼|转发.*好礼|转发朋友圈|转发全家",
-      extremeThreat: "可能会失明|可能会致癌|可能会瘫痪|致癌率|失明率|食物.*失明|食物.*致癌"
+      miracleCure: "包治百病|根治|治愈率|神奇效果|奇效|见效快|miracle cure|natural remedy|ancient secret|100% effective",
+      authorityBorrow: "央视报道|上过央视|老中医|华佗|李时珍|张仲景|孙思邈|NHS|诺贝尔|as seen on TV|doctor recommended|FDA approved|Harvard study",
+      foodTaboo: "不能吃|不能一起吃|食物相克|不能过夜|食物禁忌|睡前不能吃|never eat|food combination|toxic together",
+      healthAnxiety: "正在衰竭|再不养|来不及|90%.*缺|你的.*正在求救|关乎寿命|决定寿命|影响寿命|再饿也要忍住|silently killing|you'?re at risk|could be fatal",
+      folkRemedy: "偏方|秘方|不传秘方|民间偏方|老祖宗|口口相传|很珍贵|当作口诀|终于找到了|ancient remedy|tribal secret|grandma'?s recipe",
+      forwardReward: "转发.*有礼|转发.*好礼|转发朋友圈|转发全家|share this|send to everyone|share before they delete",
+      extremeThreat: "可能会失明|可能会致癌|可能会瘫痪|致癌率|失明率|食物.*失明|食物.*致癌|could go blind|may cause cancer|risk of paralysis"
     },
     sideHustleVariant: {
-      femalPersona: "女人.*月入|夫人.*觉醒|宝妈.*副业|女性.*赚钱",
-      reviewStyle: "复盘|关键转折|我做对了|经验分享|方法论",
-      diaryPersona: "日记|84年|42岁|大学老师.*副业|职业转型"
+      femalPersona: "女人.*月入|夫人.*觉醒|宝妈.*副业|女性.*赚钱|moms? making|women earning",
+      reviewStyle: "复盘|关键转折|我做对了|经验分享|方法论|my review|how I did it",
+      diaryPersona: "日记|84年|42岁|大学老师.*副业|职业转型|my journey|career change"
+    },
+    deepfakeDoctor: {
+      impersonationPhrases: "as a doctor with \\d+ years|I'?ve been a (?:surgeon|physician) for",
+      productPushPhrases: "this (?:supplement|extract|formula) is|better than (?:Ozempic|prescription)|link in bio|available on Amazon"
+    },
+    cryptoScam: {
+      giveawayScam: "free (?:bitcoin|crypto|tokens)|double your (?:BTC|ETH|crypto)|airdrop claim|send me .* I'?ll send back",
+      impersonationScam: "official support|admin here|verify your wallet|connect your wallet"
+    },
+    astroturfing: {
+      threePostPattern: "I made \\$[\\d,]+ (?:using|with) this|I achieved .+\\. Copy this|should (?:this|\\w+) be banned",
+      sockPuppetSignals: "been using this for weeks|payout came quick|thought it was a scam too|really interesting to see"
+    },
+    jobScam: {
+      platformShift: "let'?s continue on (?:Telegram|WhatsApp|Signal)|move to private channel|join our (?:internal|private) (?:group|channel)",
+      upfrontPayment: "registration fee|verification fee|training cost|license fee|equipment deposit",
+      techExploit: "download this (?:repo|project) for (?:assessment|evaluation)|run this (?:code|project)|install this (?:extension|plugin)"
+    },
+    impersonationScam: {
+      grandparentScam: "new number|my phone (?:broke|is broken)|this is my new number|can'?t talk right now|need money (?:urgently|immediately)",
+      accountHijack: "optimize your (?:LinkedIn|profile)|provide your (?:login|credentials|password)|verify (?:identity|account) via link"
     }
   },
   elderlyRules: {
@@ -556,6 +591,32 @@ const RULES = {
       authorityCheck: "1. 核实专家/机构是否真实存在 2. 正规医生不会网上卖药 3. 「央视报道过」≠央视背书 4. 电视台传播偏方≠医学验证"
     }
   },
+  internationalElderlyRules: {
+    keywords: {
+      healthPseudoscience: ["miracle cure", "natural remedy", "ancient secret", "what doctors won't tell you", "big pharma doesn't want you to know"],
+      authorityImpersonation: ["as seen on TV", "doctor recommended", "FDA approved facility", "clinically proven", "Harvard study", "Mayo Clinic"],
+      benefitScam: ["free benefits", "you qualify for", "grocery card", "flex card", "health allowance card", "Medicare benefits"],
+      supplementScam: ["all-natural", "FDA-registered facility", "GMP certified", "natural extract", "better than Ozempic"],
+      fakeDeadline: ["act now", "last chance", "expires today", "enrollment closes", "limited time offer"],
+      deepfakeDoctor: ["AI-generated doctor", "TikDoc", "synthetic physician"],
+      cryptoScam: ["free bitcoin", "double your crypto", "airdrop claim", "connect wallet", "verify wallet", "giveaway"]
+    },
+    correctionMessages: {
+      healthPseudoscience: "No supplement can legally claim to cure, treat, or prevent any disease (FDA/FTC). 'Miracle cure' is marketing, not medical evidence.",
+      authorityImpersonation: "'FDA-registered facility' ≠ FDA-approved. A white coat costs $20 on Amazon. Verify credentials through state medical boards.",
+      benefitScam: "Medicare will never contact you unsolicited about new benefits. 'Free grocery/health cards' are common scams targeting seniors.",
+      supplementScam: "'All-natural' is not 'safe.' 'FDA-registered facility' only means the site is registered, not that the product is verified.",
+      fakeDeadline: "Legitimate government programs have standard enrollment periods, not 'act now' pressure. Urgency is the #1 scam red flag.",
+      deepfakeDoctor: "AI-generated 'doctors' are increasingly common. Check for lip sync mismatches, robotic voice, or the same 'doctor' on multiple accounts.",
+      cryptoScam: "No legitimate crypto project will ask you to 'send crypto to receive more.' Blue checkmarks can be purchased and don't verify identity."
+    },
+    preventionTips: {
+      general: "1. Verify credentials through official medical boards 2. 'FDA-registered' ≠ 'FDA-approved' 3. Never give personal info from social media ads 4. Report scam ads to FTC",
+      benefitScam: "1. Medicare never contacts you unsolicited 2. No real program requires calling from a Facebook ad 3. Check .gov domains 4. Report to reportfraud.ftc.gov",
+      deepfakeDoctor: "1. Look for lip sync mismatches and robotic voice 2. Search 'doctor name + scam' 3. Real doctors don't sell supplements on TikTok 4. Check AI-generated labels",
+      cryptoScam: "1. Never send crypto to strangers 2. Blue checkmark ≠ verified identity 3. Don't click crypto links from social media 4. Use ScamSniffer to check wallet connections"
+    }
+  },
   weights: {
     adParam: 30, highRiskName: 25, mediumRiskName: 15,
     highRiskTitle: 20, mediumRiskTitle: 10, contentPattern: 15,
@@ -567,7 +628,9 @@ const RULES = {
     miracleCure: 18, authorityBorrow: 16, foodTaboo: 16,
     healthAnxiety: 15, folkRemedy: 14, forwardReward: 12,
     healthPseudoscience: 18, authorityImpersonation: 16,
-    forwardInducement: 12, supplementSales: 10
+    forwardInducement: 12, supplementSales: 10,
+    deepfakeDoctor: 22, cryptoScam: 18, astroturfing: 16,
+    fakeBenefitScam: 20, commentBotRatio: 15, coordinatedTiming: 14
   },
   thresholds: { high: 30, medium: 15 }
 };
